@@ -27,7 +27,12 @@ function Search({ setShowSearch }) {
     async function fn() {
       try {
         const res = await fetch(
-          `https://thingproxy.freeboard.io/fetch/https://api.spotalike.com/v1/tracks/search?q=${song}`
+          `https://thingproxy.freeboard.io/fetch/https://api.spotalike.com/v1/tracks/search?q=${song}`,
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+            },
+          }
         );
 
         const songs = await res.json();
