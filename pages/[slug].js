@@ -82,10 +82,13 @@ export async function getServerSideProps(context) {
   const payload = { artist, track };
   let data;
   try {
-    const res = await fetch('https://api.spotalike.com/v1/playlists', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
+    const res = await fetch(
+      'https://thingproxy.freeboard.io/fetch/https://api.spotalike.com/v1/playlists',
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }
+    );
     data = await res.json();
   } catch (error) {
     console.log(error);

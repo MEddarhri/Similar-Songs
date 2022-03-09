@@ -27,8 +27,9 @@ function Search({ setShowSearch }) {
     async function fn() {
       try {
         const res = await fetch(
-          `https://api.spotalike.com/v1/tracks/search?q=${song}`
+          `https://thingproxy.freeboard.io/fetch/https://api.spotalike.com/v1/tracks/search?q=${song}`
         );
+
         const songs = await res.json();
 
         setSearchResults(songs.data);
