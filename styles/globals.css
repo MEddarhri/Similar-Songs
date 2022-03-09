@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+    font-family: 'Lato', sans-serif;
+}
+
+.bg-image::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-image: url('/images/back-image.webp');
+    background-repeat: no-repeat;
+    background-position: center -100px;
+    opacity: 0.2;
+}
+
+.overlay {
+    opacity: 1;
+    background: linear-gradient(360deg, #12273a, rgba(22, 44, 63, 0.5));
+}
+
+.backdrop {
+    backdrop-filter: blur(1px);
+}
+
+.songSearch:hover {
+    color: #0f2130;
+}
+
+.songSearch:hover p {
+    color: #206b66;
+}
+
+.songSearch:hover span {
+    color: #0f2130;
+}
+
+.song-suggestion {
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 750px) {
+    .song-suggestion:not(:last-child) {
+        border-bottom: 1px solid #112435;
+    }
+}
+
+@media (min-width: 1024px) {
+    .song-suggestion:hover .more {
+        display: block;
+    }
+    .song-suggestion:hover h1,
+    .song-suggestion:hover p {
+        color: #3cedba;
+    }
+    .song-suggestion:hover .play {
+        background-color: #fff4;
+    }
+}
