@@ -27,11 +27,20 @@ function Search({ setShowSearch }) {
     async function fn() {
       try {
         const res = await fetch(
-          `https://api.allorigins.win/raw?url=https://api.spotalike.com/v1/tracks/search?q=${song}`
+          `https://http-cors-proxy.p.rapidapi.com/https://api.spotalike.com/v1/tracks/search?q=${song}`,
+          {
+            method: 'GET',
+            headers: {
+              origin: 'https://spotalike.com/',
+              'x-requested-with': 'https://exm-songs.vercel.app/',
+              'x-rapidapi-host': 'http-cors-proxy.p.rapidapi.com',
+              'x-rapidapi-key':
+                'ad70070813msh70c02d8afe9915ep123d62jsnaf9e6e1341ab',
+            },
+          }
         );
-        console.log(res);
+
         const songs = await res.json();
-        console.log();
 
         setSearchResults(songs.data);
       } catch (error) {
