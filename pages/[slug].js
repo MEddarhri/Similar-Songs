@@ -10,18 +10,12 @@ import dateFormat from 'dateformat';
 import { getProviders, useSession, signIn, signOut } from 'next-auth/react';
 import useSpotify from '../hooks/useSpotify';
 
-function Slug({ data, providers }) {
+function Slug({ data }) {
   const { data: session } = useSession();
   const { tracks } = data;
-  console.log(tracks);
   const [showSearch, setShowSearch] = useState(false);
   const [added, setAdded] = useState(false);
   const spotifyApi = useSpotify();
-  if (session) {
-    console.log(session);
-  } else {
-    console.log(session);
-  }
 
   async function createPlaylist() {
     try {
@@ -151,7 +145,6 @@ export async function getServerSideProps(context) {
   let data;
   let providers;
   try {
-    providers = await getProviders();
     const res = await fetch(
       'https://http-cors-proxy.p.rapidapi.com/https://api.spotalike.com/v1/playlists',
       {
@@ -175,7 +168,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data,
-      providers,
     },
   };
 }
