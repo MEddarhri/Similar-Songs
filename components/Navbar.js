@@ -1,7 +1,11 @@
+import { useSession, signOut } from 'next-auth/react';
 import React from 'react';
 import { BsSpotify } from 'react-icons/bs';
+import { FiLogOut } from 'react-icons/fi';
 
 function Navbar({ setShowSearch, showSearch }) {
+  const { data: session } = useSession();
+
   function handleClick() {
     if (showSearch) {
       document.body.classList.remove('overflow-hidden');
@@ -32,6 +36,11 @@ function Navbar({ setShowSearch, showSearch }) {
           >
             Enter track
           </div>
+          {session && (
+            <button className='p-1 ' onClick={() => signOut()}>
+              <FiLogOut className='text-[1.4rem] md:text-[1.6rem] text-red-600' />
+            </button>
+          )}
         </div>
       )}
     </nav>

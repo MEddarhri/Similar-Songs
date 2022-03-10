@@ -1,18 +1,64 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { BsSpotify } from 'react-icons/bs';
 import { FaPatreon } from 'react-icons/fa';
 import { MdOutlineErrorOutline } from 'react-icons/md';
-import Boxs from '../components/Boxs';
 import SongSuggestion from '../components/SongSuggestion';
 import Search from '../components/Search';
 import dateFormat from 'dateformat';
+import { getProviders, useSession, signIn, signOut } from 'next-auth/react';
+import useSpotify from '../hooks/useSpotify';
 
-function Slug({ data }) {
-  console.log(data);
+function Slug({ data, providers }) {
+  const { data: session } = useSession();
   const { tracks } = data;
+  console.log(tracks);
   const [showSearch, setShowSearch] = useState(false);
+  const [added, setAdded] = useState(false);
+  const spotifyApi = useSpotify();
+  if (session) {
+    console.log(session);
+  } else {
+    console.log(session);
+  }
+
+  async function createPlaylist() {
+    try {
+      if (spotifyApi.getAccessToken()) {
+        const playlist = await spotifyApi.createPlaylist(
+          `Similar-Songs: ${data.artist} - ${data.track}`,
+          {
+            description: 'Feel The Power',
+            public: true,
+          }
+        );
+        const addTrack = await spotifyApi.addTracksToPlaylist(
+          playlist.body.id,
+          tracks.map((track) => `spotify:track:${track.spotifyId}`)
+        );
+        setAdded(true);
+      } else {
+        console.log('else');
+      }
+    } catch (error) {
+      console.log('Something went wrong!', error);
+    }
+  }
+
+  useEffect(() => {
+    if (spotifyApi.getAccessToken()) {
+      spotifyApi
+        .getMe()
+        .then((data) =>
+          console.log(
+            'Some information about the authenticated user',
+            data.body
+          )
+        )
+        .catch((err) => console.log(err));
+    }
+  }, [spotifyApi]);
 
   if (data.tracks == undefined) {
     return (
@@ -48,10 +94,31 @@ function Slug({ data }) {
             } minutes of similar songs, enjoy!`}
           </p>
           <div className='md:flex md:space-x-10'>
-            <button className='flex items-center space-x-2 px-6 py-3 mb-8 rounded-[50px] border-2  border-[#3cedba] text-[#3cedba] hover:bg-[#3cedba] hover:text-[#12273a] transition'>
-              <BsSpotify className='text-[22px]' />
-              <span className='font-bold'>Add playlist to Spotify</span>
-            </button>
+            {!session && (
+              <button
+                className='flex items-center space-x-2 px-6 py-3 mb-8 rounded-[50px] border-2  border-[#3cedba] text-[#3cedba] hover:bg-[#3cedba] hover:text-[#12273a] transition'
+                onClick={() => signIn()}
+              >
+                <BsSpotify className='text-[22px]' />
+                <span className='font-bold'>Login with Spotify</span>
+              </button>
+            )}
+
+            {session && (
+              <button
+                className={`flex items-center space-x-2 px-6 py-3 mb-8 rounded-[50px] border-2  border-[#3cedba] text-[#3cedba] hover:bg-[#3cedba] hover:text-[#12273a] transition ${
+                  added && 'cursor-not-allowed'
+                }`}
+                onClick={createPlaylist}
+              >
+                <BsSpotify className='text-[22px]' />
+                <span className='font-bold'>
+                  {added
+                    ? 'Playlist added successfully'
+                    : 'Add playlist to Spotify'}
+                </span>
+              </button>
+            )}
             <div className=' flex space-x-2 rounded-[10px] bg-[#0f2130]   p-3 md:p-2  md:rounded-none md:bg-transparent'>
               <div className='icon w-[40px] h-[40px] bg-[#1c3850ce] flex items-center justify-center rounded-[50px]  md:bg-white'>
                 <FaPatreon className='text-white md:text-black' />
@@ -82,7 +149,9 @@ export async function getServerSideProps(context) {
   const { artist, track } = context.query;
   const payload = { artist, track };
   let data;
+  let providers;
   try {
+    providers = await getProviders();
     const res = await fetch(
       'https://http-cors-proxy.p.rapidapi.com/https://api.spotalike.com/v1/playlists',
       {
@@ -106,6 +175,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data,
+      providers,
     },
   };
 }

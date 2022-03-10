@@ -1,6 +1,7 @@
 import Boxs from '../components/Boxs';
 import { useState } from 'react';
 import Search from '../components/Search';
+import { signOut } from 'next-auth/react';
 
 export default function Home() {
   const [showSearch, setShowSearch] = useState(false);
@@ -52,6 +53,12 @@ export default function Home() {
             title='What do you think of Spotalike?'
             desc={`We'd love your feedback.`}
           />
+          <button
+            className='text-sm px-6 py-1 rounded-[5px] bg-green-400'
+            onClick={() => signOut()}
+          >
+            SIGN OUT
+          </button>
         </div>
       </div>
       {showSearch && <Search setShowSearch={setShowSearch} />}
