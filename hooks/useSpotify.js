@@ -4,7 +4,7 @@ import spotifyApi from '../lib/spotify';
 
 function useSpotify() {
   const { data } = useSession();
-  console.log(data);
+
   useEffect(() => {
     if (data) {
       spotifyApi.setAccessToken(data.user.token);

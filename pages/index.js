@@ -2,6 +2,7 @@ import Boxs from '../components/Boxs';
 import { useState } from 'react';
 import Search from '../components/Search';
 import { signOut } from 'next-auth/react';
+import Icon from '../components/Icon';
 
 export default function Home() {
   const [showSearch, setShowSearch] = useState(false);
@@ -18,12 +19,8 @@ export default function Home() {
   return (
     <div className=' relative bg-[#12273a] bg-image max-w-[1440px] mx-auto min-h-screen '>
       <div className='absolute z-10 w-full h-full top-0 left-0 right-0  overlay '></div>
-      <div className='relative z-20 px-[10vw] py-[15vw]'>
-        <img
-          className='w-[50px] mx-auto mb-[30px]'
-          src='/images/spotify.png'
-          alt='spotify image'
-        />
+      <div className='relative z-20 px-[10vw] py-[15vw] lg:py-[150px]'>
+        <Icon w={80} color='#3cedba' classProps='mx-auto mb-[30px]' />
         <p className='text-center mx-auto mb-[30px] max-w-[440px] text-[1.125rem] font-medium text-[#fff7]'>
           {`
           Give us your favorite track and we’ll give you a Spotify playlist with

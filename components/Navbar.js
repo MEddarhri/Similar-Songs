@@ -2,6 +2,7 @@ import { useSession, signOut } from 'next-auth/react';
 import React from 'react';
 import { BsSpotify } from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
+import Icon from './Icon';
 
 function Navbar({ setShowSearch, showSearch }) {
   const { data: session } = useSession();
@@ -23,7 +24,8 @@ function Navbar({ setShowSearch, showSearch }) {
   return (
     <nav className='flex items-center px-5 py-4 md:px-12 md:py-8'>
       <a href={'/'} className='mr-auto'>
-        <BsSpotify className='text-[2rem] md:text-[3rem]  text-[#3cedba]' />
+        <Icon w={80} color='#3cedba' />
+        {/* <BsSpotify className='text-[2rem] md:text-[3rem]  text-[#3cedba]' /> */}
       </a>
       {showSearch == false && (
         <div className='flex items-centerr space-x-4'>
