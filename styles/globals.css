@@ -6,6 +6,10 @@
     font-family: 'Lato', sans-serif;
 }
 
+#__next {
+    background-color: #12273a;
+}
+
 .bg-image::after {
     content: '';
     display: block;
